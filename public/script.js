@@ -11110,6 +11110,9 @@ jQuery(async function () {
     let S_TAPreviouslyFocused = false;
     $('#send_textarea').on('focusin focus click', () => {
         S_TAPreviouslyFocused = true;
+        if (isMobile()) {
+            scrollChatToBottom({ waitForFrame: true });
+        }
     });
     $('#send_but, #option_regenerate, #option_continue, #mes_continue, #mes_impersonate').on('click', () => {
         if (S_TAPreviouslyFocused) {
@@ -11126,6 +11129,17 @@ jQuery(async function () {
             S_TAPreviouslyFocused = true;
         }
     });
+
+    if (window.visualViewport) {
+        let previousViewportHeight = window.visualViewport.height;
+        window.visualViewport.addEventListener('resize', () => {
+            const currentHeight = window.visualViewport.height;
+            if (previousViewportHeight - currentHeight > 100 && document.activeElement?.id === 'send_textarea') {
+                scrollChatToBottom({ waitForFrame: true });
+            }
+            previousViewportHeight = currentHeight;
+        });
+    }
 
     /////////////////
 
