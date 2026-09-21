@@ -12596,4 +12596,12 @@ jQuery(async function () {
             e.returnValue = true;
         }
     });
+
+    if ('serviceWorker' in navigator && window.isSecureContext) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch((err) => {
+                console.debug('[PWA] ServiceWorker registration failed:', err);
+            });
+        });
+    }
 });
